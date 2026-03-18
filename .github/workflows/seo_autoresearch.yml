@@ -70,6 +70,7 @@ jobs:
           GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
           GMAIL_USER: ${{ secrets.GMAIL_USER }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          PYTHONIOENCODING: utf-8
           # Pass workflow input to skip content generation if requested
           SKIP_CONTENT_GEN: ${{ github.event.inputs.skip_content_generation || 'false' }}
         run: |

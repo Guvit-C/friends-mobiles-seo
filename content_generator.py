@@ -302,7 +302,7 @@ Write the complete article now. Do not add any explanation before or after."""
 
 def _slugify(title: str) -> str:
     slug = title.lower()
-    slug = re.sub(r"[^\w\s-]", "", slug)
+    slug = re.sub(r"[^a-z0-9\s-]", "", slug)   # strictly ASCII — strips em dashes etc.
     slug = re.sub(r"\s+", "-", slug.strip())
     slug = re.sub(r"-+", "-", slug)
     return slug[:80]
