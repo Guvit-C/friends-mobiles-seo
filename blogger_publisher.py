@@ -67,10 +67,25 @@ def _md_to_html(markdown: str) -> str:
     """
     try:
         import markdown as md_lib
-        return md_lib.markdown(
+        html = md_lib.markdown(
             markdown,
             extensions=["tables", "fenced_code", "nl2br"],
         )
+        # Blogger applies no default CSS to tables — inject inline styles so
+        # cells have visible borders and don't collapse into each other.
+        html = html.replace(
+            "<table>",
+            '<table style="border-collapse:collapse;width:100%;margin:16px 0">'
+        )
+        html = html.replace(
+            "<th>",
+            '<th style="border:1px solid #ddd;padding:8px 12px;background:#f5f5f5;text-align:left">'
+        )
+        html = html.replace(
+            "<td>",
+            '<td style="border:1px solid #ddd;padding:8px 12px">'
+        )
+        return html
     except ImportError:
         # Fallback: basic regex conversion
         html = markdown
