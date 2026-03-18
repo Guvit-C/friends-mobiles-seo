@@ -21,3 +21,14 @@ dev/
 
 # Results file
 results.tsv
+
+# SEO agent run log (uploaded as GitHub Actions artifact, not committed)
+seo_run.log
+
+# Credentials — never commit
+.env
+.env.local
+credentials.json
+
+# Strategy backup (created before each overwrite, not needed in git)
+seo_strategy.py.bak

@@ -1,0 +1,21 @@
+# SEO Autoresearch — Python Dependencies
+# Install with: pip install -r seo_requirements.txt
+
+# OpenAI — GPT-4o web search
+openai>=1.40.0
+
+# Google Gemini with Search grounding
+google-genai>=0.8.0
+
+# OpenRouter — Perplexity (citation checks) + Claude Sonnet (content generation)
+# Both accessed via the OpenAI-compatible openai client above
+
+# Loads credentials from .env file for local development
+python-dotenv>=1.0.0
+
+# Markdown → HTML conversion for Blogger posts
+markdown>=3.6
+
+# Google Sheets logging (service account auth)
+gspread>=6.0.0
+google-auth>=2.20.0

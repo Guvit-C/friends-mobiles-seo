@@ -1,0 +1,142 @@
+name: SEO Autoresearch — Daily Citation Check & Content Generation
+
+on:
+  schedule:
+    # Run every day at 07:00 UTC (good balance: after overnight indexing activity)
+    - cron: "0 7 */3 * *"
+
+  # Allow manual trigger from GitHub Actions tab
+  workflow_dispatch:
+    inputs:
+      skip_content_generation:
+        description: "Skip blog post generation (citation check only)"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+permissions:
+  contents: write   # Required to push citations.tsv and new posts back to repo
+
+jobs:
+  seo-research:
+    name: Citation Check & Content Generation
+    runs-on: ubuntu-latest
+    timeout-minutes: 30   # Each full run should complete well within 30 min
+
+    steps:
+      # ----------------------------------------------------------------
+      # 1. Checkout
+      # ----------------------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # Full history so we can inspect citations.tsv
+
+      # ----------------------------------------------------------------
+      # 2. Set up Python
+      # ----------------------------------------------------------------
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: seo_requirements.txt
+
+      # ----------------------------------------------------------------
+      # 3. Install dependencies
+      # ----------------------------------------------------------------
+      - name: Install SEO agent dependencies
+        run: pip install -r seo_requirements.txt
+
+      # ----------------------------------------------------------------
+      # 4. Run the SEO agent
+      # ----------------------------------------------------------------
+      - name: Write Google credentials file
+        run: echo '${{ secrets.GOOGLE_CREDENTIALS_JSON }}' > credentials.json
+
+      - name: Run SEO Autoresearch Agent
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GOOGLE_AI_API_KEY: ${{ secrets.GOOGLE_AI_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          BLOGGER_CLIENT_ID: ${{ secrets.BLOGGER_CLIENT_ID }}
+          BLOGGER_CLIENT_SECRET: ${{ secrets.BLOGGER_CLIENT_SECRET }}
+          BLOGGER_REFRESH_TOKEN: ${{ secrets.BLOGGER_REFRESH_TOKEN }}
+          GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
+          GOOGLE_CREDENTIALS_FILE: credentials.json
+          GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          # Pass workflow input to skip content generation if requested
+          SKIP_CONTENT_GEN: ${{ github.event.inputs.skip_content_generation || 'false' }}
+        run: |
+          python seo_agent.py 2>&1 | tee seo_run.log
+          echo "Exit code: $?"
+
+      # ----------------------------------------------------------------
+      # 5. Upload run log as artifact (useful for debugging)
+      # ----------------------------------------------------------------
+      - name: Upload run log
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: seo-run-log-${{ github.run_id }}
+          path: seo_run.log
+          retention-days: 30
+
+      # ----------------------------------------------------------------
+      # 6. Commit and push results back to repo
+      # ----------------------------------------------------------------
+      - name: Commit results and new posts
+        run: |
+          git config --global user.name "SEO Autoresearch Bot"
+          git config --global user.email "seo-autoresearch@github-actions.bot"
+
+          # Stage results, updated strategy, generated posts, and dashboard
+          git add citations.tsv || true
+          git add seo_strategy.py || true
+          git add posts/ || true
+          git add index.html || true
+
+          # Only commit if there are actual changes
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            DATE=$(date -u '+%Y-%m-%d')
+            SCORE=$(python -c "
+          import csv
+          with open('citations.tsv') as f:
+              rows = list(csv.DictReader(f, delimiter='\t'))
+              if rows:
+                  print(rows[-1].get('citation_score', '?') + '%')
+          " 2>/dev/null || echo "?")
+            git commit -m "chore(seo): daily run ${DATE} — citation score ${SCORE}"
+            git push
+          fi
+
+      # ----------------------------------------------------------------
+      # 7. Print final summary to job log
+      # ----------------------------------------------------------------
+      - name: Print citation score summary
+        if: always()
+        run: |
+          echo "=========================================="
+          echo "SEO Autoresearch Run Complete"
+          echo "=========================================="
+          if [ -f citations.tsv ]; then
+            echo ""
+            echo "Recent results (last 5 runs):"
+            python -c "
+          import csv
+          with open('citations.tsv') as f:
+              rows = list(csv.DictReader(f, delimiter='\t'))
+          for row in rows[-5:]:
+              print(f\"  {row['date']}  score={row['citation_score']}%  status={row['status']}\")
+          " 2>/dev/null || tail -6 citations.tsv
+          fi
+          echo ""
+          echo "New posts:"
+          ls posts/*.md 2>/dev/null | tail -5 || echo "  none"
