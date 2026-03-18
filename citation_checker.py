@@ -313,7 +313,7 @@ def run_citation_check(
     Returns a CitationReport with all results.
     """
     if tools is None:
-        tools = ["gpt", "gemini", "perplexity"]
+        tools = ["gpt", "perplexity"]   # gemini excluded: search grounding has no free tier
 
     run_date = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d")
     report = CitationReport(run_date=run_date)
