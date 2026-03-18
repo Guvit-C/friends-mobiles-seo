@@ -232,9 +232,7 @@ def _posts_table(posts: list[dict]) -> str:
           <td class="py-2.5 px-3 text-sm font-medium text-slate-700 max-w-xs">{p['title']}</td>
           <td class="py-2.5 px-3">{_post_type_pill(p['type'])}</td>
           <td class="py-2.5 px-3 text-xs text-slate-400 max-w-xs">{q_preview}</td>
-          <td class="py-2.5 px-3">
-            <a href="posts/{p['file']}" class="text-teal-600 hover:underline text-xs font-mono" target="_blank">{p['file']}</a>
-          </td>
+          <td class="py-2.5 px-3 font-mono text-xs text-slate-400">{p['file']}</td>
         </tr>"""
 
     return f"""
