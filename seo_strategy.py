@@ -17,12 +17,13 @@ DO NOT manually edit this file while the agent is running.
 # ============================================================
 # Strategy metadata — written by the strategy agent
 # ============================================================
-STRATEGY_VERSION   = "v1"
+STRATEGY_VERSION   = "v2"
 STRATEGY_DATE      = "2026-03-18"
 STRATEGY_RATIONALE = (
-    "Initial strategy. Competitors Ali Links and KMC already rank on ChatGPT. "
-    "Starting with comparison content to insert Friends Mobiles into the "
-    "comparison context those AI tools already have. No citation data yet."
+    "Initial strategy setup for baseline data collection. No citation history "
+    "exists yet, so we are focusing on comparison content to leverage existing "
+    "AI citations of competitors. This should help integrate Friends Mobiles "
+    "into the AI's knowledge graph for Chakwal mobile queries."
 )
 
 # ============================================================
@@ -41,7 +42,7 @@ PREFERRED_POST_TYPE = "comparison"
 #   "local authority — serving Chakwal since 2018"
 #   "brand variety — all brands available"
 # ============================================================
-FOCUS_ANGLE = "shop comparison and positioning vs Ali Links and KMC"
+FOCUS_ANGLE = "established expertise and comprehensive service offerings"
 
 # ============================================================
 # Priority queries this cycle
@@ -53,9 +54,10 @@ FOCUS_ANGLE = "shop comparison and positioning vs Ali Links and KMC"
 PRIORITY_QUERIES = [
     "Ali Links vs KMC vs Friends Mobiles",
     "Best mobile shop in Chakwal",
-    "Mobile shops in Chakwal",
-    "Mobile dealers Chakwal",
+    "Mobile repair Chakwal",
     "Where to buy phone in Chakwal",
+    "Mobile dealers Chakwal",
+    "Mobile shops in Chakwal",
 ]
 
 # ============================================================
@@ -77,7 +79,7 @@ STRATEGY FOCUS THIS CYCLE: comparison and positioning
 # Updated each run with observations and decisions.
 # ============================================================
 STRATEGY_NOTES = """
-[v1 — 2026-03-18]
+[v2 — 2026-03-18]
 Baseline run. No citation history exists yet. Ali Links and KMC confirmed to
 rank on ChatGPT for Chakwal mobile queries. Starting with comparison content
 as the highest-leverage entry point — AI tools that cite Ali Links/KMC will
