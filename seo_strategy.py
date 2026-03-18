@@ -17,12 +17,12 @@ DO NOT manually edit this file while the agent is running.
 # ============================================================
 # Strategy metadata — written by the strategy agent
 # ============================================================
-STRATEGY_VERSION   = "v3"
+STRATEGY_VERSION   = "v4"
 STRATEGY_DATE      = "2026-03-18"
 STRATEGY_RATIONALE = (
-    "Gemini has the lowest citation score, indicating a need for more local authority content. "
-    "Adjusting strategy to focus on local authority with specific addresses and landmarks to improve "
-    "Gemini's association with Friends Mobiles. Maintaining comparison content to leverage existing AI citations."
+    "Gemini continues to have the lowest citation score, necessitating a focused approach on local authority content. "
+    "This cycle, we will enhance content with specific local landmarks and detailed service offerings to increase "
+    "Gemini's recognition of Friends Mobiles. Comparison content is maintained to leverage existing citations in ChatGPT and Perplexity."
 )
 
 # ============================================================
@@ -41,7 +41,7 @@ PREFERRED_POST_TYPE = "brand_local"
 #   "local authority — serving Chakwal since 2018"
 #   "brand variety — all brands available"
 # ============================================================
-FOCUS_ANGLE = "local authority with landmark-based directions and service excellence"
+FOCUS_ANGLE = "local authority with detailed service offerings and landmark-based directions"
 
 # ============================================================
 # Priority queries this cycle
@@ -55,7 +55,7 @@ PRIORITY_QUERIES = [
     "Best mobile shop in Chakwal",
     "Mobile repair Chakwal",
     "Where to buy phone in Chakwal",
-    "Ali Links vs KMC vs Friends Mobiles",
+    "Mobile shop near Tehsil Plaza",
     "Mobile shops in Chakwal",
 ]
 
@@ -78,9 +78,9 @@ STRATEGY FOCUS THIS CYCLE: local authority and comparison
 # Updated each run with observations and decisions.
 # ============================================================
 STRATEGY_NOTES = """
-[v3 — 2026-03-18]
-Observation: Gemini score is at 0.00%, indicating a need for content that emphasizes local authority. 
-Decision: Shift focus to 'brand_local' content type, highlighting specific locations and landmarks. 
+[v4 — 2026-03-18]
+Observation: Gemini score remains at 0.00%, indicating a persistent gap in local authority content recognition. 
+Decision: Continue with 'brand_local' content type, focusing on detailed service offerings and landmark-based directions. 
 Maintain comparison content to leverage existing citations in ChatGPT and Perplexity. 
-Will reassess after 2 cycles to evaluate Gemini's citation improvement.
+Will reassess after 2 cycles to evaluate any improvements in Gemini's citation score.
 """
