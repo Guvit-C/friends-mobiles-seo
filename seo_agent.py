@@ -200,8 +200,10 @@ def main() -> None:
     report = run_citation_check(
         queries=queries_this_run,
         domain="",   # no website — aliases handle all detection
-        aliases=["Friends Mobiles", "friends mobiles",
-                 "Friends Mobiles Chakwal", "friends mobiles chakwal"],
+        # Substring match: "Friends Mobiles" catches all variations
+        # (Friends Mobiles Chakwal, Friends Mobiles Bhoun Chowk, etc.)
+        # Case-insensitive by default in _detect_citation
+        aliases=["Friends Mobiles", "FriendsMobiles"],
         delay_between_requests=2.0,
     )
 
