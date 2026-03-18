@@ -293,12 +293,20 @@ CHECKER_MAP = {
 }
 
 
+# Per-tool delays (seconds between requests) — Gemini free tier is stricter
+TOOL_DELAYS = {
+    "gpt":        2.0,   # OpenAI handles rapid requests fine
+    "gemini":     10.0,  # Free tier: 15 RPM max — 10s gap keeps us well under
+    "perplexity": 2.0,   # OpenRouter / Sonar handles rapid requests fine
+}
+
+
 def run_citation_check(
     queries: list[str],
     domain: str,
     aliases: list[str],
     tools: list[str] = None,
-    delay_between_requests: float = 1.5,
+    delay_between_requests: float = None,  # None = use per-tool defaults above
 ) -> CitationReport:
     """
     Run citation checks for all queries across all AI tools.
@@ -307,7 +315,7 @@ def run_citation_check(
     if tools is None:
         tools = ["gpt", "gemini", "perplexity"]
 
-    run_date = datetime.datetime.utcnow().strftime("%Y-%m-%d")
+    run_date = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d")
     report = CitationReport(run_date=run_date)
 
     total = len(queries) * len(tools)
@@ -315,13 +323,15 @@ def run_citation_check(
 
     for tool in tools:
         checker = CHECKER_MAP[tool]
+        delay = delay_between_requests if delay_between_requests is not None else TOOL_DELAYS.get(tool, 2.0)
+
         for query in queries:
             done += 1
             print(f"  [{done}/{total}] {tool.upper():12s} | {query[:55]}...")
             result = checker(query, domain, aliases)
 
             if result.error:
-                print(f"    ERROR: {result.error}")
+                print(f"    ERROR: {result.error[:120]}")
             elif result.cited:
                 print(f"    CITED  ✓  snippet: {result.citation_snippet[:80]}")
             else:
@@ -329,7 +339,7 @@ def run_citation_check(
 
             report.results.append(result)
 
-            if delay_between_requests > 0:
-                time.sleep(delay_between_requests)
+            if delay > 0:
+                time.sleep(delay)
 
     return report
