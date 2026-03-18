@@ -203,7 +203,7 @@ def main() -> None:
         # Substring match: "Friends Mobiles" catches all variations
         # (Friends Mobiles Chakwal, Friends Mobiles Bhoun Chowk, etc.)
         # Case-insensitive by default in _detect_citation
-        aliases=["Friends Mobiles", "FriendsMobiles"],
+        aliases=["Friends Mobiles", "FriendsMobiles", "Friends Mobile"],
         delay_between_requests=2.0,
     )
 
