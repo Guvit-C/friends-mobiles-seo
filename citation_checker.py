@@ -102,8 +102,8 @@ def _detect_citation(text: str, domain: str, aliases: list[str]) -> tuple[bool, 
     text_lower = text.lower()
     domain_lower = domain.lower()
 
-    # Build all patterns to search for
-    patterns = [domain_lower] + [a.lower() for a in aliases]
+    # Build all patterns to search for (skip domain if empty)
+    patterns = ([domain_lower] if domain_lower else []) + [a.lower() for a in aliases]
 
     for pattern in patterns:
         idx = text_lower.find(pattern)

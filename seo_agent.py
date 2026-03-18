@@ -199,10 +199,9 @@ def main() -> None:
     print("Running citation checks...")
     report = run_citation_check(
         queries=queries_this_run,
-        domain="friendsmobiles",   # shop has no website yet — aliases handle all detection
-        aliases=[config.SHOP_NAME, "friends mobiles", "friendsmobiles",
-                 "Friends Mobiles Chakwal", config.SHOP_AREA,
-                 "Bhoun Chowk", "Ammer Baghwalia"],
+        domain="",   # no website — aliases handle all detection
+        aliases=["Friends Mobiles", "friends mobiles",
+                 "Friends Mobiles Chakwal", "friends mobiles chakwal"],
         delay_between_requests=2.0,
     )
 
