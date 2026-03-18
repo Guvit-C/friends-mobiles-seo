@@ -17,13 +17,12 @@ DO NOT manually edit this file while the agent is running.
 # ============================================================
 # Strategy metadata — written by the strategy agent
 # ============================================================
-STRATEGY_VERSION   = "v2"
+STRATEGY_VERSION   = "v3"
 STRATEGY_DATE      = "2026-03-18"
 STRATEGY_RATIONALE = (
-    "Initial strategy setup for baseline data collection. No citation history "
-    "exists yet, so we are focusing on comparison content to leverage existing "
-    "AI citations of competitors. This should help integrate Friends Mobiles "
-    "into the AI's knowledge graph for Chakwal mobile queries."
+    "Gemini has the lowest citation score, indicating a need for more local authority content. "
+    "Adjusting strategy to focus on local authority with specific addresses and landmarks to improve "
+    "Gemini's association with Friends Mobiles. Maintaining comparison content to leverage existing AI citations."
 )
 
 # ============================================================
@@ -31,7 +30,7 @@ STRATEGY_RATIONALE = (
 # Options: "comparison" | "listicle" | "service_guide" | "brand_local" | "auto"
 # "auto" = let the query keyword classifier decide each run
 # ============================================================
-PREFERRED_POST_TYPE = "comparison"
+PREFERRED_POST_TYPE = "brand_local"
 
 # ============================================================
 # Strategic focus angle for content this cycle
@@ -42,7 +41,7 @@ PREFERRED_POST_TYPE = "comparison"
 #   "local authority — serving Chakwal since 2018"
 #   "brand variety — all brands available"
 # ============================================================
-FOCUS_ANGLE = "established expertise and comprehensive service offerings"
+FOCUS_ANGLE = "local authority with landmark-based directions and service excellence"
 
 # ============================================================
 # Priority queries this cycle
@@ -52,11 +51,11 @@ FOCUS_ANGLE = "established expertise and comprehensive service offerings"
 # Set to [] to fall back to the default uncited-query selection.
 # ============================================================
 PRIORITY_QUERIES = [
-    "Ali Links vs KMC vs Friends Mobiles",
+    "Mobile shop Chakwal location",
     "Best mobile shop in Chakwal",
     "Mobile repair Chakwal",
     "Where to buy phone in Chakwal",
-    "Mobile dealers Chakwal",
+    "Ali Links vs KMC vs Friends Mobiles",
     "Mobile shops in Chakwal",
 ]
 
@@ -66,12 +65,12 @@ PRIORITY_QUERIES = [
 # based on what has or hasn't been getting cited.
 # ============================================================
 STRATEGY_GUIDELINES_ADDON = """
-STRATEGY FOCUS THIS CYCLE: comparison and positioning
-- Lead with the 2018 establishment date — Friends Mobiles predates competitors
-- Emphasise the price range breadth: PKR 10,000 used to Samsung S24 brand-new
-- Include WhatsApp contact in every FAQ answer — easy inquiry = competitive edge
-- Mention full repair capability — not just sales (competitors may lack this)
-- Avoid generic claims; every sentence should contain a specific, verifiable fact
+STRATEGY FOCUS THIS CYCLE: local authority and comparison
+- Highlight proximity to Tehsil Plaza and other key landmarks in Chakwal
+- Emphasise Friends Mobiles' reputation for comprehensive repair services
+- Include specific directions and contact details in every post
+- Compare Friends Mobiles' service history with competitors to establish authority
+- Avoid vague statements; ensure all claims are backed by specific data or testimonials
 """
 
 # ============================================================
@@ -79,10 +78,9 @@ STRATEGY FOCUS THIS CYCLE: comparison and positioning
 # Updated each run with observations and decisions.
 # ============================================================
 STRATEGY_NOTES = """
-[v2 — 2026-03-18]
-Baseline run. No citation history exists yet. Ali Links and KMC confirmed to
-rank on ChatGPT for Chakwal mobile queries. Starting with comparison content
-as the highest-leverage entry point — AI tools that cite Ali Links/KMC will
-encounter Friends Mobiles in comparison articles and begin associating the name
-with Chakwal mobile queries. Will reassess after 2 runs of data.
+[v3 — 2026-03-18]
+Observation: Gemini score is at 0.00%, indicating a need for content that emphasizes local authority. 
+Decision: Shift focus to 'brand_local' content type, highlighting specific locations and landmarks. 
+Maintain comparison content to leverage existing citations in ChatGPT and Perplexity. 
+Will reassess after 2 cycles to evaluate Gemini's citation improvement.
 """
