@@ -129,10 +129,10 @@ BLOGGER_STATUS     = "live"
 # Your Blogger Blog ID — found in Blogger dashboard → Settings → Basic
 # URL looks like: https://www.blogger.com/blog/posts/1234567890123456789
 # The number at the end is your Blog ID
-BLOGGER_BLOG_ID    = ""    # e.g. "1234567890123456789"
+BLOGGER_BLOG_ID    = "6735626986781113020"
 
 # Blog URL (used for canonical links in posts)
-BLOGGER_BLOG_URL   = ""    # e.g. "https://friendsmobiles.blogspot.com"
+BLOGGER_BLOG_URL   = "https://friendsmobileschakwal.blogspot.com"
 
 # ============================================================
 # CONTENT GENERATION GUIDELINES
