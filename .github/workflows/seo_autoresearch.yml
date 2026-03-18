@@ -16,6 +16,14 @@ on:
         options:
           - "false"
           - "true"
+      skip_citation_check:
+        description: "Skip citation API calls (blog post generation only — free)"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
 
 permissions:
   contents: write   # Required to push citations.tsv and new posts back to repo
@@ -71,8 +79,9 @@ jobs:
           GMAIL_USER: ${{ secrets.GMAIL_USER }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
           PYTHONIOENCODING: utf-8
-          # Pass workflow input to skip content generation if requested
+          # Pass workflow inputs
           SKIP_CONTENT_GEN: ${{ github.event.inputs.skip_content_generation || 'false' }}
+          SKIP_CITATION_CHECK: ${{ github.event.inputs.skip_citation_check || 'false' }}
         run: |
           python seo_agent.py 2>&1 | tee seo_run.log
           echo "Exit code: $?"

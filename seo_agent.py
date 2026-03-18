@@ -194,35 +194,46 @@ def main() -> None:
     print()
 
     # ----------------------------------------------------------------
-    # Step 3: Run citation checks
+    # Step 3: Run citation checks (or skip if SKIP_CITATION_CHECK=true)
     # ----------------------------------------------------------------
-    print("Running citation checks...")
-    report = run_citation_check(
-        queries=queries_this_run,
-        domain="",   # no website — aliases handle all detection
-        # Substring match: "Friends Mobiles" catches all variations
-        # (Friends Mobiles Chakwal, Friends Mobiles Bhoun Chowk, etc.)
-        # Case-insensitive by default in _detect_citation
-        aliases=["Friends Mobiles", "FriendsMobiles", "Friends Mobile"],
-        delay_between_requests=2.0,
-    )
+    skip_citations = os.environ.get("SKIP_CITATION_CHECK", "false").lower() == "true"
 
-    # ----------------------------------------------------------------
-    # Step 4: Determine status (keep / discard / baseline)
-    # ----------------------------------------------------------------
-    is_baseline = prev_best == 0.0
-    improved = report.citation_score >= prev_best + config.IMPROVEMENT_THRESHOLD
-
-    if is_baseline:
-        status = "baseline"
-        description = f"Baseline — {len(queries_this_run)} of {len(config.TARGET_QUERIES)} queries checked across 3 AI tools"
-    elif improved:
-        status = "keep"
-        delta = report.citation_score - prev_best
-        description = f"Score improved by {delta:.1f}pp — new content strategy effective"
+    if skip_citations:
+        print("Skipping citation checks (SKIP_CITATION_CHECK=true) — content generation only.")
+        from citation_checker import CitationReport
+        report = CitationReport(
+            run_date=datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d")
+        )
+        status = "content_only"
+        description = "Citation check skipped — blog post generation only run"
     else:
-        status = "watch"
-        description = f"No significant improvement (need +{config.IMPROVEMENT_THRESHOLD}pp)"
+        print("Running citation checks...")
+        report = run_citation_check(
+            queries=queries_this_run,
+            domain="",   # no website — aliases handle all detection
+            # Substring match: "Friends Mobiles" catches all variations
+            # (Friends Mobiles Chakwal, Friends Mobiles Bhoun Chowk, etc.)
+            # Case-insensitive by default in _detect_citation
+            aliases=["Friends Mobiles", "FriendsMobiles", "Friends Mobile"],
+            delay_between_requests=2.0,
+        )
+
+        # ----------------------------------------------------------------
+        # Step 4: Determine status (keep / discard / baseline)
+        # ----------------------------------------------------------------
+        is_baseline = prev_best == 0.0
+        improved = report.citation_score >= prev_best + config.IMPROVEMENT_THRESHOLD
+
+        if is_baseline:
+            status = "baseline"
+            description = f"Baseline — {len(queries_this_run)} of {len(config.TARGET_QUERIES)} queries checked across 3 AI tools"
+        elif improved:
+            status = "keep"
+            delta = report.citation_score - prev_best
+            description = f"Score improved by {delta:.1f}pp — new content strategy effective"
+        else:
+            status = "watch"
+            description = f"No significant improvement (need +{config.IMPROVEMENT_THRESHOLD}pp)"
 
     # ----------------------------------------------------------------
     # Step 4: Run strategy agent — analyses results, rewrites seo_strategy.py
@@ -253,16 +264,18 @@ def main() -> None:
 
         # Strategy agent may have set PRIORITY_QUERIES — use those first
         strategy_queries = getattr(strategy_mod, "PRIORITY_QUERIES", []) if strategy_mod else []
-        uncited = report.uncited_queries()
+        # When citations were skipped, treat all queries this run as targets
+        uncited = queries_this_run if skip_citations else report.uncited_queries()
+        weakly = [] if skip_citations else report.weakly_cited_queries()
 
         if strategy_queries:
             # Intersect priority queries with actually-uncited ones; pad with uncited if needed
             targets = [q for q in strategy_queries if q in uncited]
             if len(targets) < 3:
-                targets += select_content_targets(uncited, report.weakly_cited_queries(), 5)
+                targets += select_content_targets(uncited, weakly, 5)
                 targets = list(dict.fromkeys(targets))[:5]   # dedupe, keep order
         else:
-            targets = select_content_targets(uncited, report.weakly_cited_queries(), 5)
+            targets = select_content_targets(uncited, weakly, 5)
 
         # Merge strategy overrides into shop_context
         if strategy_mod:
@@ -325,8 +338,11 @@ def main() -> None:
         "strategy": strategy_version,
         "description": description,
     }
-    append_result(config.RESULTS_FILE, result_row)
-    print(f"\nResults logged to {config.RESULTS_FILE}")
+    if not skip_citations:
+        append_result(config.RESULTS_FILE, result_row)
+        print(f"\nResults logged to {config.RESULTS_FILE}")
+    else:
+        print("\nCitation check skipped — citations.tsv not updated.")
 
     # ----------------------------------------------------------------
     # Step 7: Print summary (analogous to autoresearch's metric block)
@@ -337,8 +353,9 @@ def main() -> None:
     # Step 8a: Log to Google Sheets
     # ----------------------------------------------------------------
     print("\nLogging to Google Sheets...")
-    log_run(result_row)
-    log_citation_tests(report.results, run_date=report.run_date)
+    if not skip_citations:
+        log_run(result_row)
+        log_citation_tests(report.results, run_date=report.run_date)
     if new_post_path:
         log_blog_post(
             post_path=new_post_path,
@@ -365,10 +382,10 @@ def main() -> None:
     # ----------------------------------------------------------------
     # Step 9: Print detailed uncited queries for debugging
     # ----------------------------------------------------------------
-    uncited = report.uncited_queries()
-    if uncited:
+    uncited_debug = report.uncited_queries()
+    if uncited_debug:
         print("Queries not cited by any AI tool:")
-        for q in uncited:
+        for q in uncited_debug:
             print(f"  - {q}")
         print()
 
