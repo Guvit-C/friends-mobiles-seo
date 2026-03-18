@@ -353,7 +353,7 @@ def generate_blog_post(
             base_url="https://openrouter.ai/api/v1",
             default_headers={
                 "HTTP-Referer": shop_context.get("facebook", "https://medium.com"),
-                "X-Title": "Friends Mobiles Chakwal — AEO Agent",
+                "X-Title": "Friends Mobiles Chakwal SEO Agent",
             },
         )
 
