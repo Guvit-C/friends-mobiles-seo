@@ -17,13 +17,13 @@ DO NOT manually edit this file while the agent is running.
 # ============================================================
 # Strategy metadata — written by the strategy agent
 # ============================================================
-STRATEGY_VERSION   = "v5"
+STRATEGY_VERSION   = "v6"
 STRATEGY_DATE      = "2026-03-18"
 STRATEGY_RATIONALE = (
-    "Gemini's citation score remains at 0.00%, indicating a need for a focused strategy on local authority content. "
-    "This cycle will emphasize Friends Mobiles' unique offerings and proximity to local landmarks to boost recognition. "
-    "Service and repair guides will be highlighted to improve Perplexity scores, while maintaining comparison content "
-    "to sustain ChatGPT and Perplexity citations."
+    "Gemini's citation score remains at 0.00%, necessitating a pivot to emphasize local authority and landmark-based navigation. "
+    "This cycle will focus on Friends Mobiles' unique location advantages and comprehensive repair services to improve recognition. "
+    "The strategy includes targeting service-related queries to enhance Perplexity scores, while maintaining local authority content "
+    "to boost Gemini citations."
 )
 
 # ============================================================
@@ -31,7 +31,7 @@ STRATEGY_RATIONALE = (
 # Options: "comparison" | "listicle" | "service_guide" | "brand_local" | "auto"
 # "auto" = let the query keyword classifier decide each run
 # ============================================================
-PREFERRED_POST_TYPE = "service_guide"
+PREFERRED_POST_TYPE = "brand_local"
 
 # ============================================================
 # Strategic focus angle for content this cycle
@@ -42,7 +42,7 @@ PREFERRED_POST_TYPE = "service_guide"
 #   "local authority — serving Chakwal since 2018"
 #   "brand variety — all brands available"
 # ============================================================
-FOCUS_ANGLE = "comprehensive repair services with landmark-based navigation"
+FOCUS_ANGLE = "local authority with landmark-based directions and service expertise"
 
 # ============================================================
 # Priority queries this cycle
@@ -52,10 +52,10 @@ FOCUS_ANGLE = "comprehensive repair services with landmark-based navigation"
 # Set to [] to fall back to the default uncited-query selection.
 # ============================================================
 PRIORITY_QUERIES = [
+    "Best mobile shop in Chakwal",
+    "Mobile shop near Tehsil Plaza",
     "Mobile repair Chakwal",
     "Where to fix phone in Chakwal",
-    "Mobile shop Chakwal location",
-    "Mobile shop near Tehsil Plaza",
     "Water damage repair Chakwal",
     "Battery replacement Chakwal",
 ]
@@ -66,12 +66,12 @@ PRIORITY_QUERIES = [
 # based on what has or hasn't been getting cited.
 # ============================================================
 STRATEGY_GUIDELINES_ADDON = """
-STRATEGY FOCUS THIS CYCLE: local authority and service expertise
-- Provide clear directions from major landmarks like Tehsil Plaza
-- Detail specific repair services offered by Friends Mobiles, including water damage and battery replacement
-- Include customer testimonials and success stories to establish credibility
-- Ensure all posts have contact information and operating hours prominently displayed
-- Compare Friends Mobiles' services directly with competitors to highlight advantages
+STRATEGY FOCUS THIS CYCLE: local authority and landmark navigation
+- Highlight Friends Mobiles' proximity to key landmarks like Tehsil Plaza
+- Emphasize comprehensive repair services, including water damage and battery replacement
+- Incorporate customer testimonials and success stories for credibility
+- Ensure contact information and operating hours are prominently displayed in each post
+- Compare Friends Mobiles' offerings to competitors to showcase advantages
 """
 
 # ============================================================
@@ -79,8 +79,8 @@ STRATEGY FOCUS THIS CYCLE: local authority and service expertise
 # Updated each run with observations and decisions.
 # ============================================================
 STRATEGY_NOTES = """
-[v5 — 2026-03-18]
+[v6 — 2026-03-18]
 Observation: Gemini's citation score remains at 0.00%, indicating a need for stronger local authority content. 
-Decision: Shift to 'service_guide' content type, focusing on comprehensive repair services and landmark-based navigation. 
-Target service-related queries to improve Perplexity scores. Will review impact on Gemini after 2 cycles.
+Decision: Shift to 'brand_local' content type, focusing on local authority with landmark-based directions and service expertise. 
+Target service-related queries to improve Perplexity scores and enhance local recognition. Will review impact on Gemini after 2 cycles.
 """
