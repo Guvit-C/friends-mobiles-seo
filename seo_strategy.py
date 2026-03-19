@@ -17,13 +17,13 @@ DO NOT manually edit this file while the agent is running.
 # ============================================================
 # Strategy metadata — written by the strategy agent
 # ============================================================
-STRATEGY_VERSION   = "v6"
-STRATEGY_DATE      = "2026-03-18"
+STRATEGY_VERSION   = "v7"
+STRATEGY_DATE      = "2026-03-19"
 STRATEGY_RATIONALE = (
-    "Gemini's citation score remains at 0.00%, necessitating a pivot to emphasize local authority and landmark-based navigation. "
-    "This cycle will focus on Friends Mobiles' unique location advantages and comprehensive repair services to improve recognition. "
-    "The strategy includes targeting service-related queries to enhance Perplexity scores, while maintaining local authority content "
-    "to boost Gemini citations."
+    "Gemini's citation score remains at 0.00%, indicating a need for stronger local authority content. "
+    "This cycle will focus on enhancing local recognition by emphasizing Friends Mobiles' unique location advantages and comprehensive repair services. "
+    "The strategy includes targeting service-related queries to improve Perplexity scores, while maintaining local authority content "
+    "to boost Gemini citations. The pivot to 'brand_local' content aims to establish Friends Mobiles as a landmark in Chakwal."
 )
 
 # ============================================================
@@ -79,7 +79,7 @@ STRATEGY FOCUS THIS CYCLE: local authority and landmark navigation
 # Updated each run with observations and decisions.
 # ============================================================
 STRATEGY_NOTES = """
-[v6 — 2026-03-18]
+[v7 — 2026-03-19]
 Observation: Gemini's citation score remains at 0.00%, indicating a need for stronger local authority content. 
 Decision: Shift to 'brand_local' content type, focusing on local authority with landmark-based directions and service expertise. 
 Target service-related queries to improve Perplexity scores and enhance local recognition. Will review impact on Gemini after 2 cycles.
