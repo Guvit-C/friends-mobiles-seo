@@ -399,9 +399,16 @@ def generate_blog_post(
 
 def _recently_covered_keywords(posts_dir: str, days: int = 30) -> set[str]:
     """
-    Return a set of slug keywords from posts written within the last `days` days.
-    Used to prevent writing duplicate posts on the same topic too soon.
+    Return a set of topic-specific slug keywords from posts written within
+    the last `days` days. Generic location/category words are excluded so
+    they don't cause false-positive matches across unrelated queries.
     """
+    # Words that appear in virtually every query and slug — not topic-specific
+    GENERIC = {
+        "chakwal", "mobile", "phone", "phones", "shop", "mobiles",
+        "where", "what", "best", "2024", "2025", "2026", "market",
+        "ammer", "baghwalia", "bhoun", "chowk", "friends",
+    }
     cutoff = datetime.date.today() - datetime.timedelta(days=days)
     keywords: set[str] = set()
     posts_path = Path(posts_dir)
@@ -410,7 +417,7 @@ def _recently_covered_keywords(posts_dir: str, days: int = 30) -> set[str]:
 
     for md_file in posts_path.glob("*.md"):
         # Filename format: YYYY-MM-DD-slug-words.md
-        name = md_file.stem  # e.g. "2026-03-18-oppo-phones-in-chakwal-..."
+        name = md_file.stem
         parts = name.split("-", 3)
         if len(parts) < 4:
             continue
@@ -419,9 +426,11 @@ def _recently_covered_keywords(posts_dir: str, days: int = 30) -> set[str]:
         except ValueError:
             continue
         if post_date >= cutoff:
-            # Add every meaningful word from the slug
             slug_words = parts[3].split("-")
-            keywords.update(w for w in slug_words if len(w) > 3)
+            keywords.update(
+                w for w in slug_words
+                if len(w) > 3 and w not in GENERIC
+            )
 
     return keywords
 
@@ -441,13 +450,22 @@ def select_content_targets(
     seen: set[str] = set()
     selected: list[str] = []
 
+    GENERIC_Q = {
+        "chakwal", "mobile", "phone", "phones", "shop", "mobiles",
+        "where", "what", "best", "in", "to", "for", "and", "the",
+        "buy", "get", "near", "available", "2024", "2025", "2026",
+    }
+
     def _already_covered(query: str) -> bool:
         if not covered:
             return False
         q_words = set(re.sub(r"[^a-z0-9 ]", "", query.lower()).split())
-        # Consider covered if 2+ significant words overlap with a recent post slug
-        overlap = q_words & covered
-        return len(overlap) >= 2
+        # Strip generic words to get the topic-specific words of this query
+        topic_words = q_words - GENERIC_Q
+        if not topic_words:
+            return False
+        # Covered if ALL topic-specific words already appear in a recent post slug
+        return topic_words.issubset(covered)
 
     for q in uncited_queries:
         if q not in seen and len(selected) < max_queries and not _already_covered(q):
