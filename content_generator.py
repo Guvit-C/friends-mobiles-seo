@@ -397,26 +397,75 @@ def generate_blog_post(
 # Content strategy selector
 # ---------------------------------------------------------------------------
 
+def _recently_covered_keywords(posts_dir: str, days: int = 30) -> set[str]:
+    """
+    Return a set of slug keywords from posts written within the last `days` days.
+    Used to prevent writing duplicate posts on the same topic too soon.
+    """
+    cutoff = datetime.date.today() - datetime.timedelta(days=days)
+    keywords: set[str] = set()
+    posts_path = Path(posts_dir)
+    if not posts_path.exists():
+        return keywords
+
+    for md_file in posts_path.glob("*.md"):
+        # Filename format: YYYY-MM-DD-slug-words.md
+        name = md_file.stem  # e.g. "2026-03-18-oppo-phones-in-chakwal-..."
+        parts = name.split("-", 3)
+        if len(parts) < 4:
+            continue
+        try:
+            post_date = datetime.date(int(parts[0]), int(parts[1]), int(parts[2]))
+        except ValueError:
+            continue
+        if post_date >= cutoff:
+            # Add every meaningful word from the slug
+            slug_words = parts[3].split("-")
+            keywords.update(w for w in slug_words if len(w) > 3)
+
+    return keywords
+
+
 def select_content_targets(
     uncited_queries: list[str],
     weakly_cited_queries: list[str],
     max_queries: int = 5,
+    posts_dir: str = "posts",
 ) -> list[str]:
     """
     Select highest-priority queries to target.
     Priority: fully uncited > weakly cited (< 2 tools).
+    Skips queries whose topic was already covered in the last 30 days.
     """
-    seen = set()
-    selected = []
+    covered = _recently_covered_keywords(posts_dir)
+    seen: set[str] = set()
+    selected: list[str] = []
+
+    def _already_covered(query: str) -> bool:
+        if not covered:
+            return False
+        q_words = set(re.sub(r"[^a-z0-9 ]", "", query.lower()).split())
+        # Consider covered if 2+ significant words overlap with a recent post slug
+        overlap = q_words & covered
+        return len(overlap) >= 2
 
     for q in uncited_queries:
-        if q not in seen and len(selected) < max_queries:
+        if q not in seen and len(selected) < max_queries and not _already_covered(q):
             selected.append(q)
             seen.add(q)
 
     for q in weakly_cited_queries:
-        if q not in seen and len(selected) < max_queries:
+        if q not in seen and len(selected) < max_queries and not _already_covered(q):
             selected.append(q)
             seen.add(q)
+
+    if not selected:
+        # All queries covered recently — fall back to weakly cited ones anyway
+        # so we don't skip content generation entirely
+        print("  All queries recently covered — falling back to weakly cited targets.")
+        for q in (uncited_queries + weakly_cited_queries):
+            if q not in seen and len(selected) < max_queries:
+                selected.append(q)
+                seen.add(q)
 
     return selected

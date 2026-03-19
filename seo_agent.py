@@ -272,10 +272,10 @@ def main() -> None:
             # Intersect priority queries with actually-uncited ones; pad with uncited if needed
             targets = [q for q in strategy_queries if q in uncited]
             if len(targets) < 3:
-                targets += select_content_targets(uncited, weakly, 5)
+                targets += select_content_targets(uncited, weakly, 5, posts_dir=config.CONTENT_OUTPUT_DIR)
                 targets = list(dict.fromkeys(targets))[:5]   # dedupe, keep order
         else:
-            targets = select_content_targets(uncited, weakly, 5)
+            targets = select_content_targets(uncited, weakly, 5, posts_dir=config.CONTENT_OUTPUT_DIR)
 
         # Merge strategy overrides into shop_context
         if strategy_mod:
