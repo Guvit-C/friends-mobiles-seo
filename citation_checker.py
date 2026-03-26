@@ -163,36 +163,38 @@ def check_openai(query: str, domain: str, aliases: list[str]) -> CitationResult:
 
 
 # ---------------------------------------------------------------------------
-# Gemini (Google) checker — uses Google Search grounding
+# Gemini checker — routed via OpenRouter with :online web search mode
 # ---------------------------------------------------------------------------
 
 def check_gemini(query: str, domain: str, aliases: list[str]) -> CitationResult:
     try:
-        from google import genai
-        from google.genai.types import Tool, GenerateContentConfig, GoogleSearch
+        from openai import OpenAI
 
-        client = genai.Client(api_key=os.environ["GOOGLE_AI_API_KEY"])
-
-        response = client.models.generate_content(
-            model="gemini-2.0-flash",
-            contents=(
-                f"{query}\n\n"
-                "Please recommend the most helpful websites or sources "
-                "for further reading on this topic."
-            ),
-            config=GenerateContentConfig(
-                tools=[Tool(google_search=GoogleSearch())],
-                max_output_tokens=1024,
-            ),
+        client = OpenAI(
+            api_key=os.environ["OPENROUTER_API_KEY"],
+            base_url="https://openrouter.ai/api/v1",
+            default_headers={
+                "HTTP-Referer": domain or "https://medium.com",
+                "X-Title": "SEO Autoresearch Agent",
+            },
         )
 
-        # Extract text from response
-        text = ""
-        if response.candidates:
-            for part in response.candidates[0].content.parts:
-                if hasattr(part, "text"):
-                    text += part.text
+        response = client.chat.completions.create(
+            model="google/gemini-2.0-flash-001:online",
+            messages=[
+                {
+                    "role": "user",
+                    "content": (
+                        f"{query}\n\n"
+                        "Please recommend the most helpful websites or sources "
+                        "for further reading on this topic."
+                    ),
+                }
+            ],
+            max_tokens=1024,
+        )
 
+        text = response.choices[0].message.content or ""
         cited, snippet = _detect_citation(text, domain, aliases)
 
         return CitationResult(
@@ -295,9 +297,9 @@ CHECKER_MAP = {
 
 # Per-tool delays (seconds between requests) — Gemini free tier is stricter
 TOOL_DELAYS = {
-    "gpt":        2.0,   # OpenAI handles rapid requests fine
-    "gemini":     10.0,  # Free tier: 15 RPM max — 10s gap keeps us well under
-    "perplexity": 2.0,   # OpenRouter / Sonar handles rapid requests fine
+    "gpt":        2.0,
+    "gemini":     2.0,   # Via OpenRouter :online — no free-tier rate limit concern
+    "perplexity": 2.0,
 }
 
 
@@ -313,7 +315,7 @@ def run_citation_check(
     Returns a CitationReport with all results.
     """
     if tools is None:
-        tools = ["gpt", "perplexity"]   # gemini excluded: search grounding has no free tier
+        tools = ["gpt", "gemini", "perplexity"]
 
     run_date = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d")
     report = CitationReport(run_date=run_date)
