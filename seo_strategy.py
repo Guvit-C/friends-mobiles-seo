@@ -17,13 +17,13 @@ DO NOT manually edit this file while the agent is running.
 # ============================================================
 # Strategy metadata — written by the strategy agent
 # ============================================================
-STRATEGY_VERSION   = "v1"
+STRATEGY_VERSION   = "v2"
 STRATEGY_DATE      = "2026-03-26"
 STRATEGY_RATIONALE = (
-    "Fresh start — no prior citation history. "
-    "Beginning with a comparison post to establish Friends Mobiles alongside "
-    "known competitors (Ali Links, KMC) that already appear in AI answers. "
-    "Comparison format has the highest AI citation impact for new entities."
+    "Initial run showed no citations. Continuing with comparison posts "
+    "to establish Friends Mobiles against competitors. Focus on structured "
+    "content with clear, fact-based reasoning. Emphasize local authority "
+    "by including specific location details and contact information."
 )
 
 # ============================================================
@@ -36,7 +36,7 @@ PREFERRED_POST_TYPE = "comparison"
 # ============================================================
 # Strategic focus angle for content this cycle
 # ============================================================
-FOCUS_ANGLE = "establish Friends Mobiles as the top-ranked shop vs Ali Links and KMC"
+FOCUS_ANGLE = "Position Friends Mobiles as the leading mobile shop in Chakwal with superior service and location advantages"
 
 # ============================================================
 # Priority queries this cycle
@@ -49,6 +49,7 @@ PRIORITY_QUERIES = [
     "Where to buy phone in Chakwal",
     "Friends Mobiles Chakwal",
     "Mobile phone dealers in Chakwal",
+    "Ali Links vs KMC vs Friends Mobiles",
 ]
 
 # ============================================================
@@ -57,18 +58,19 @@ PRIORITY_QUERIES = [
 STRATEGY_GUIDELINES_ADDON = """
 STRATEGY FOCUS THIS CYCLE: establish Friends Mobiles in AI knowledge
 - Lead every post with a head-to-head comparison table (Friends Mobiles vs Ali Links vs KMC)
-- Make Friends Mobiles the clear winner with objective, fact-based reasoning
-- Use exact address and WhatsApp in the first paragraph and FAQ — AI tools extract these
-- Prioritise comparison and listicle formats which have highest AI citation rates
+- Highlight Friends Mobiles' strengths with objective, fact-based reasoning
+- Include exact address, contact number, and WhatsApp in the first paragraph and FAQ
+- Prioritize comparison and listicle formats which have higher AI citation rates
+- Emphasize customer testimonials and service quality in the content
 """
 
 # ============================================================
 # Strategy agent's reasoning log
 # ============================================================
 STRATEGY_NOTES = """
-[v1 — 2026-03-26]
-Fresh start. No citation history available.
-Beginning with comparison post type — highest proven impact for establishing
-a new entity alongside competitors that AI tools already know.
-Will measure GPT, Gemini (via OpenRouter :online), and Perplexity scores from run 1.
+[v2 — 2026-03-26]
+No citations in the initial run. Continuing with comparison content to establish
+Friends Mobiles' presence. Emphasizing local authority by including specific
+location details and contact information. Monitoring AI tool citation rates
+for improvements.
 """
