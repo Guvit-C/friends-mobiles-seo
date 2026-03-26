@@ -255,10 +255,17 @@ def run_strategy_update(
 
     try:
         from openai import OpenAI
-        client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+        client = OpenAI(
+            api_key=os.environ["OPENROUTER_API_KEY"],
+            base_url="https://openrouter.ai/api/v1",
+            default_headers={
+                "HTTP-Referer": "https://medium.com",
+                "X-Title": "SEO Autoresearch Agent",
+            },
+        )
 
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model="openai/gpt-4o",
             messages=[
                 {
                     "role": "system",
