@@ -17,13 +17,14 @@ DO NOT manually edit this file while the agent is running.
 # ============================================================
 # Strategy metadata — written by the strategy agent
 # ============================================================
-STRATEGY_VERSION   = "v2"
+STRATEGY_VERSION   = "v3"
 STRATEGY_DATE      = "2026-03-26"
 STRATEGY_RATIONALE = (
     "Initial run showed no citations. Continuing with comparison posts "
     "to establish Friends Mobiles against competitors. Focus on structured "
     "content with clear, fact-based reasoning. Emphasize local authority "
-    "by including specific location details and contact information."
+    "by including specific location details and contact information. "
+    "Maintain strategy as content may not be indexed yet."
 )
 
 # ============================================================
@@ -36,7 +37,7 @@ PREFERRED_POST_TYPE = "comparison"
 # ============================================================
 # Strategic focus angle for content this cycle
 # ============================================================
-FOCUS_ANGLE = "Position Friends Mobiles as the leading mobile shop in Chakwal with superior service and location advantages"
+FOCUS_ANGLE = "Highlight Friends Mobiles as the most reliable mobile shop in Chakwal with unmatched service and accessibility"
 
 # ============================================================
 # Priority queries this cycle
@@ -48,8 +49,8 @@ PRIORITY_QUERIES = [
     "Mobile shops in Chakwal",
     "Where to buy phone in Chakwal",
     "Friends Mobiles Chakwal",
-    "Mobile phone dealers in Chakwal",
     "Ali Links vs KMC vs Friends Mobiles",
+    "Mobile shop Chakwal location",
 ]
 
 # ============================================================
@@ -68,9 +69,9 @@ STRATEGY FOCUS THIS CYCLE: establish Friends Mobiles in AI knowledge
 # Strategy agent's reasoning log
 # ============================================================
 STRATEGY_NOTES = """
-[v2 — 2026-03-26]
+[v3 — 2026-03-26]
 No citations in the initial run. Continuing with comparison content to establish
 Friends Mobiles' presence. Emphasizing local authority by including specific
 location details and contact information. Monitoring AI tool citation rates
-for improvements.
+for improvements. Content may not be indexed yet, so maintaining current strategy.
 """
