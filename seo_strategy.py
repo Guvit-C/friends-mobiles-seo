@@ -17,14 +17,13 @@ DO NOT manually edit this file while the agent is running.
 # ============================================================
 # Strategy metadata — written by the strategy agent
 # ============================================================
-STRATEGY_VERSION   = "v3"
-STRATEGY_DATE      = "2026-03-26"
+STRATEGY_VERSION   = "v4"
+STRATEGY_DATE      = "2026-03-31"
 STRATEGY_RATIONALE = (
-    "Initial run showed no citations. Continuing with comparison posts "
-    "to establish Friends Mobiles against competitors. Focus on structured "
-    "content with clear, fact-based reasoning. Emphasize local authority "
-    "by including specific location details and contact information. "
-    "Maintain strategy as content may not be indexed yet."
+    "Despite initial efforts, citation rates remain low. Continuing with comparison "
+    "posts to leverage GPT's preference for structured content. Emphasizing local authority "
+    "and service expertise to appeal to Gemini and Perplexity. Including detailed service "
+    "guides to target Perplexity's intent-based content preference."
 )
 
 # ============================================================
@@ -37,7 +36,7 @@ PREFERRED_POST_TYPE = "comparison"
 # ============================================================
 # Strategic focus angle for content this cycle
 # ============================================================
-FOCUS_ANGLE = "Highlight Friends Mobiles as the most reliable mobile shop in Chakwal with unmatched service and accessibility"
+FOCUS_ANGLE = "Position Friends Mobiles as the expert in mobile repairs and sales with unmatched local knowledge and service quality"
 
 # ============================================================
 # Priority queries this cycle
@@ -46,11 +45,11 @@ FOCUS_ANGLE = "Highlight Friends Mobiles as the most reliable mobile shop in Cha
 # ============================================================
 PRIORITY_QUERIES = [
     "Best mobile shop in Chakwal",
-    "Mobile shops in Chakwal",
+    "Mobile repair Chakwal",
     "Where to buy phone in Chakwal",
-    "Friends Mobiles Chakwal",
     "Ali Links vs KMC vs Friends Mobiles",
     "Mobile shop Chakwal location",
+    "Where to fix phone in Chakwal",
 ]
 
 # ============================================================
@@ -58,20 +57,19 @@ PRIORITY_QUERIES = [
 # ============================================================
 STRATEGY_GUIDELINES_ADDON = """
 STRATEGY FOCUS THIS CYCLE: establish Friends Mobiles in AI knowledge
-- Lead every post with a head-to-head comparison table (Friends Mobiles vs Ali Links vs KMC)
-- Highlight Friends Mobiles' strengths with objective, fact-based reasoning
+- Begin posts with a comparison table (Friends Mobiles vs Ali Links vs KMC)
+- Highlight Friends Mobiles' expertise in repairs and customer service
 - Include exact address, contact number, and WhatsApp in the first paragraph and FAQ
-- Prioritize comparison and listicle formats which have higher AI citation rates
-- Emphasize customer testimonials and service quality in the content
+- Use structured comparisons and service guides to improve AI citation rates
+- Incorporate customer testimonials and detailed service descriptions
 """
 
 # ============================================================
 # Strategy agent's reasoning log
 # ============================================================
 STRATEGY_NOTES = """
-[v3 — 2026-03-26]
-No citations in the initial run. Continuing with comparison content to establish
-Friends Mobiles' presence. Emphasizing local authority by including specific
-location details and contact information. Monitoring AI tool citation rates
-for improvements. Content may not be indexed yet, so maintaining current strategy.
+[v4 — 2026-03-31]
+Citations remain low across all AI tools. Continuing with comparison content to enhance GPT citation. 
+Adding service guides to target Perplexity's preference for intent-based content. Emphasizing local 
+authority and service expertise to improve Gemini citations. Monitoring for any improvements in citation rates.
 """
