@@ -30,9 +30,20 @@ def _load_runs(results_file: str = "citations.tsv") -> list[dict]:
         return []
     try:
         with open(path, newline="", encoding="utf-8") as f:
-            return list(csv.DictReader(f, delimiter="\t"))
+            all_runs = list(csv.DictReader(f, delimiter="\t"))
+            # Filter out empty or malformed rows
+            return [r for r in all_runs if r.get("date") and r.get("citation_score") is not None]
     except Exception:
         return []
+
+def _f(val, default=0.0) -> float:
+    """Safely convert value to float, handling None and non-numeric strings."""
+    if val is None:
+        return float(default)
+    try:
+        return float(val)
+    except (ValueError, TypeError):
+        return float(default)
 
 
 def _load_posts(posts_dir: str = "posts") -> list[dict]:
@@ -112,8 +123,8 @@ def _summary_cards(runs: list[dict], post_count: int) -> str:
     if not runs:
         return ""
     latest    = runs[-1]
-    best      = max(float(r.get("citation_score", 0)) for r in runs)
-    l_score   = float(latest.get("citation_score", 0))
+    best      = max(_f(r.get("citation_score", 0)) for r in runs)
+    l_score   = _f(latest.get("citation_score", 0))
     l_status  = latest.get("status", "—")
     l_date    = latest.get("date", "—")
     run_count = len(runs)
@@ -142,7 +153,7 @@ def _trend_bars(runs: list[dict]) -> str:
 
     bars = ""
     for r in recent:
-        s   = float(r.get("citation_score", 0))
+        s   = _f(r.get("citation_score", 0))
         h   = max(4, int(s * 1.2))         # scale height (max 120px for 100%)
         cls = _score_bg(s)
         bars += f"""
@@ -178,7 +189,7 @@ def _runs_table(runs: list[dict]) -> str:
 
     rows = ""
     for r in reversed(runs[-25:]):
-        score = float(r.get("citation_score", 0))
+        score = _f(r.get("citation_score", 0))
         post  = r.get("new_post", "none")
         if post and post.startswith("http"):
             post_cell = f'<a href="{post}" target="_blank" class="text-teal-600 hover:underline text-xs font-medium">View post ↗</a>'
@@ -191,9 +202,9 @@ def _runs_table(runs: list[dict]) -> str:
         <tr class="border-b border-slate-50 hover:bg-slate-50 transition-colors">
           <td class="py-2.5 px-3 text-xs text-slate-500">{r.get('date','')}</td>
           <td class="py-2.5 px-3 font-bold text-sm {_score_class(score)}">{score:.1f}%</td>
-          <td class="py-2.5 px-3 text-xs text-slate-500">{float(r.get('gpt_score',0)):.1f}%</td>
-          <td class="py-2.5 px-3 text-xs text-slate-500">{float(r.get('gemini_score',0)):.1f}%</td>
-          <td class="py-2.5 px-3 text-xs text-slate-500">{float(r.get('perplexity_score',0)):.1f}%</td>
+          <td class="py-2.5 px-3 text-xs text-slate-500">{_f(r.get('gpt_score',0)):.1f}%</td>
+          <td class="py-2.5 px-3 text-xs text-slate-500">{_f(r.get('gemini_score',0)):.1f}%</td>
+          <td class="py-2.5 px-3 text-xs text-slate-500">{_f(r.get('perplexity_score',0)):.1f}%</td>
           <td class="py-2.5 px-3">{_status_pill(r.get('status',''))}</td>
           <td class="py-2.5 px-3 text-xs text-slate-400">{r.get('strategy','')}</td>
           <td class="py-2.5 px-3">{post_cell}</td>
@@ -327,9 +338,9 @@ def generate_dashboard(
       <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
         <h2 class="text-sm font-semibold text-slate-700 uppercase tracking-wider mb-4">Latest Run — Per AI Tool</h2>
         {"".join([
-            _tool_row("ChatGPT",    float((runs[-1] if runs else {}).get("gpt_score", 0))),
-            _tool_row("Gemini",     float((runs[-1] if runs else {}).get("gemini_score", 0))),
-            _tool_row("Perplexity", float((runs[-1] if runs else {}).get("perplexity_score", 0))),
+            _tool_row("ChatGPT",    _f((runs[-1] if runs else {}).get("gpt_score", 0))),
+            _tool_row("Gemini",     _f((runs[-1] if runs else {}).get("gemini_score", 0))),
+            _tool_row("Perplexity", _f((runs[-1] if runs else {}).get("perplexity_score", 0))),
         ]) if runs else '<p class="text-sm text-slate-400">No data yet.</p>'}
       </div>
     </div>
