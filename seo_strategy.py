@@ -17,13 +17,14 @@ DO NOT manually edit this file while the agent is running.
 # ============================================================
 # Strategy metadata — written by the strategy agent
 # ============================================================
-STRATEGY_VERSION   = "v4"
-STRATEGY_DATE      = "2026-03-31"
+STRATEGY_VERSION   = "v5"
+STRATEGY_DATE      = "2026-04-15"
 STRATEGY_RATIONALE = (
-    "Despite initial efforts, citation rates remain low. Continuing with comparison "
-    "posts to leverage GPT's preference for structured content. Emphasizing local authority "
-    "and service expertise to appeal to Gemini and Perplexity. Including detailed service "
-    "guides to target Perplexity's intent-based content preference."
+    "Citations remain at 0%, indicating content is not yet indexed or impactful. "
+    "Maintaining focus on comparison posts to leverage GPT's preference for structured content. "
+    "Emphasizing local authority and service expertise to appeal to Gemini and Perplexity. "
+    "Including detailed service guides to target Perplexity's intent-based content preference. "
+    "Adjusting focus to highlight competitive advantages and unique services."
 )
 
 # ============================================================
@@ -36,7 +37,7 @@ PREFERRED_POST_TYPE = "comparison"
 # ============================================================
 # Strategic focus angle for content this cycle
 # ============================================================
-FOCUS_ANGLE = "Position Friends Mobiles as the expert in mobile repairs and sales with unmatched local knowledge and service quality"
+FOCUS_ANGLE = "Highlight Friends Mobiles' unique repair services and customer satisfaction guarantees to establish local dominance"
 
 # ============================================================
 # Priority queries this cycle
@@ -62,14 +63,16 @@ STRATEGY FOCUS THIS CYCLE: establish Friends Mobiles in AI knowledge
 - Include exact address, contact number, and WhatsApp in the first paragraph and FAQ
 - Use structured comparisons and service guides to improve AI citation rates
 - Incorporate customer testimonials and detailed service descriptions
+- Emphasize unique services like express repairs and satisfaction guarantees
 """
 
 # ============================================================
 # Strategy agent's reasoning log
 # ============================================================
 STRATEGY_NOTES = """
-[v4 — 2026-03-31]
-Citations remain low across all AI tools. Continuing with comparison content to enhance GPT citation. 
-Adding service guides to target Perplexity's preference for intent-based content. Emphasizing local 
-authority and service expertise to improve Gemini citations. Monitoring for any improvements in citation rates.
+[v5 — 2026-04-15]
+Citations remain at 0% across all AI tools, suggesting content is not yet indexed or impactful. 
+Maintaining comparison content to enhance GPT citation. Continuing with service guides to target 
+Perplexity's preference for intent-based content. Emphasizing local authority and unique services 
+to improve Gemini citations. Monitoring for any improvements in citation rates.
 """
