@@ -17,14 +17,14 @@ DO NOT manually edit this file while the agent is running.
 # ============================================================
 # Strategy metadata — written by the strategy agent
 # ============================================================
-STRATEGY_VERSION   = "v5"
-STRATEGY_DATE      = "2026-04-15"
+STRATEGY_VERSION   = "v6"
+STRATEGY_DATE      = "2026-04-16"
 STRATEGY_RATIONALE = (
     "Citations remain at 0%, indicating content is not yet indexed or impactful. "
-    "Maintaining focus on comparison posts to leverage GPT's preference for structured content. "
+    "Continuing with comparison posts to leverage GPT's preference for structured content. "
     "Emphasizing local authority and service expertise to appeal to Gemini and Perplexity. "
     "Including detailed service guides to target Perplexity's intent-based content preference. "
-    "Adjusting focus to highlight competitive advantages and unique services."
+    "Adjusting focus to highlight competitive advantages and unique services, with a specific emphasis on express repairs and satisfaction guarantees."
 )
 
 # ============================================================
@@ -37,7 +37,7 @@ PREFERRED_POST_TYPE = "comparison"
 # ============================================================
 # Strategic focus angle for content this cycle
 # ============================================================
-FOCUS_ANGLE = "Highlight Friends Mobiles' unique repair services and customer satisfaction guarantees to establish local dominance"
+FOCUS_ANGLE = "Emphasize Friends Mobiles' express repair services and satisfaction guarantees to establish a competitive edge in Chakwal"
 
 # ============================================================
 # Priority queries this cycle
@@ -50,7 +50,7 @@ PRIORITY_QUERIES = [
     "Where to buy phone in Chakwal",
     "Ali Links vs KMC vs Friends Mobiles",
     "Mobile shop Chakwal location",
-    "Where to fix phone in Chakwal",
+    "Express phone repair Chakwal",
 ]
 
 # ============================================================
@@ -59,7 +59,7 @@ PRIORITY_QUERIES = [
 STRATEGY_GUIDELINES_ADDON = """
 STRATEGY FOCUS THIS CYCLE: establish Friends Mobiles in AI knowledge
 - Begin posts with a comparison table (Friends Mobiles vs Ali Links vs KMC)
-- Highlight Friends Mobiles' expertise in repairs and customer service
+- Highlight Friends Mobiles' expertise in express repairs and customer satisfaction guarantees
 - Include exact address, contact number, and WhatsApp in the first paragraph and FAQ
 - Use structured comparisons and service guides to improve AI citation rates
 - Incorporate customer testimonials and detailed service descriptions
@@ -70,7 +70,7 @@ STRATEGY FOCUS THIS CYCLE: establish Friends Mobiles in AI knowledge
 # Strategy agent's reasoning log
 # ============================================================
 STRATEGY_NOTES = """
-[v5 — 2026-04-15]
+[v6 — 2026-04-16]
 Citations remain at 0% across all AI tools, suggesting content is not yet indexed or impactful. 
 Maintaining comparison content to enhance GPT citation. Continuing with service guides to target 
 Perplexity's preference for intent-based content. Emphasizing local authority and unique services 
